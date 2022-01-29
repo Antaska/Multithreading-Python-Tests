@@ -56,8 +56,8 @@ class Task:
             position1 = self._array.get_random_position(self._thread_number)
             position2 = self._array.get_random_position(self._thread_number)
             while position1 == position2:
-                position2 = self._array.get_random_position()
-            self._array.swap_values(position1,position2)
+                position2 = self._array.get_random_position(self._thread_number)
+            self._array.swap_values(position1,position2, self._thread_number)
 
 
 class NumberOfChanges:
@@ -68,10 +68,10 @@ class NumberOfChanges:
     def check_and_reserve_run(self, thread_number):
         if self.are_executions_remaining():
             self.reserve_run()
-            logging.debug("Thread %d:Execution remaining found. There are still %d executions remaining after this one",thread_number,self._number_of_changes)
+            logging.debug("Thread %d: Execution remaining found. There are still %d executions remaining after this one",thread_number,self._number_of_changes)
             return True
         else:
-            logging.debug("Thread %d:No more executions remaining.",thread_number)
+            logging.debug("Thread %d: No more executions remaining.",thread_number)
             return False
 
     def are_executions_remaining(self):
@@ -111,13 +111,13 @@ class Array:
         logging.debug("Thread %d: Random position chosen is %d", thread_number, value)
         return value
     
-    def swap_values(self, position1, position2):
+    def swap_values(self, position1, position2, thread_number):
         value1 = self._array[position1]
         value2 = self._array[position2]
-        logging.debug("Value of position %d is %d and value of position %d is %d", position1, value1, position2, value2)
+        logging.debug("Thread %d: Value of position %d is %d and value of position %d is %d", thread_number, position1, value1, position2, value2)
         self._array[position1] = value2
         self._array[position2] = value1
-        logging.debug("After swapped: Value of position %d is %d and value of position %d is %d", position1, value1, position2, value2)
+        logging.debug("Thread %d: After swapped: Value of position %d is %d and value of position %d is %d",thread_number, position1, value1, position2, value2)
 
 
 if __name__ == "__main__":
