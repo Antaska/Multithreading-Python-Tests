@@ -24,7 +24,7 @@ class Main:
         self.threads.prepare_threads(self.array, self.changes)
         logging.info("Starting the threads")
         self.threads.start_threads()
-        logging.info("Threads started, waiting to all threads finish")
+        logging.info("Threads started, waiting to all threads to finish")
         self.threads.wait_for_all_threads_finish()
         logging.info("All threads finished")
 
@@ -93,8 +93,9 @@ class NumberOfChanges:
         return self._number_of_changes > 0
 
     def reserve_run(self):
-        self._number_of_changes -= 1
-
+        temp = self._number_of_changes
+        time.sleep(0.001)
+        self._number_of_changes = temp -1
 
 class Array:
     def __init__(self, array_length):
@@ -129,7 +130,7 @@ class Array:
     def swap_values(self, position1, position2, thread_number):
         value1 = self._array[position1]
         value2 = self._array[position2]
-        time.sleep(0.02)
+        time.sleep(0.001)
         logging.debug("Thread %d: Value of position %d is %d and value of position %d is %d", thread_number, position1, value1, position2, value2)
         self._array[position1] = value2
         self._array[position2] = value1
