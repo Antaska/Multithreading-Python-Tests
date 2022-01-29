@@ -39,6 +39,10 @@ class ThreadManagement:
             task = Task(index)
             x = threading.Thread(target=task.prepare_and_do(array,changes,))
             self.threads.append(x)
+    
+    def start_threads(self):
+        for thread in self.threads:
+            thread.start()
 
 
 class Task:
