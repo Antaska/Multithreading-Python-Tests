@@ -2,6 +2,7 @@ import logging
 import random
 import datetime
 import threading 
+import time
 
 ARRAY_LENGTH = 10
 NUMBER_OF_CHANGES = 10
@@ -39,7 +40,7 @@ class ThreadManagement:
     def prepare_threads(self, array, changes):
         for index in range(self._number_of_threads):
             task = Task(index)
-            x = threading.Thread(target=task.prepare_and_do(array,changes,))
+            x = threading.Thread(target=task.prepare_and_do, args=(array,changes,))
             self.threads.append(x)
     
     def start_threads(self):
@@ -128,6 +129,7 @@ class Array:
     def swap_values(self, position1, position2, thread_number):
         value1 = self._array[position1]
         value2 = self._array[position2]
+        time.sleep(0.02)
         logging.debug("Thread %d: Value of position %d is %d and value of position %d is %d", thread_number, position1, value1, position2, value2)
         self._array[position1] = value2
         self._array[position2] = value1
