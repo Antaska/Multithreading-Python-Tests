@@ -4,8 +4,8 @@ import datetime
 import threading 
 
 ARRAY_LENGTH = 10
-NUMBER_OF_CHANGES = 10000000
-LOGGING_LEVEL = logging.INFO
+NUMBER_OF_CHANGES = 10
+LOGGING_LEVEL = logging.DEBUG
 
 class Main:
 
@@ -18,7 +18,7 @@ class Main:
         self.changes = NumberOfChanges(number_of_changes)
     
     def do(self):
-        task = Task()
+        task = Task(1)
         task.prepare(self.array,self.changes)
         logging.info("Starting the changes.")
         task.do()
@@ -41,7 +41,7 @@ class ThreadManagement:
 
 class Task:
     def __init__(self,thread_number):
-        self.__thread_number = thread_number
+        self._thread_number = thread_number
         
     def prepare_and_do(self, array, changes):
         self.prepare(array, changes)
@@ -52,7 +52,7 @@ class Task:
         self._changes = changes
     
     def do(self):
-        while(self._changes.check_and_reserve_run()):
+        while(self._changes.check_and_reserve_run(self._thread_number)):
             position1 = self._array.get_random_position()
             position2 = self._array.get_random_position()
             while position1 == position2:
@@ -65,13 +65,13 @@ class NumberOfChanges:
         logging.debug("Setting total number of changes to %d.",number_of_changes)
         self._number_of_changes = number_of_changes
     
-    def check_and_reserve_run(self):
+    def check_and_reserve_run(self, thread_number):
         if self.are_executions_remaining():
             self.reserve_run()
-            logging.debug("Execution remaining found. There are still %d executions remaining after this one",self._number_of_changes)
+            logging.debug("Thread %d:Execution remaining found. There are still %d executions remaining after this one",thread_number,self._number_of_changes)
             return True
         else:
-            logging.debug("No more executions remaining.")
+            logging.debug("Thread %d:No more executions remaining.",thread_number)
             return False
 
     def are_executions_remaining(self):
