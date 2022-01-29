@@ -6,6 +6,40 @@ ARRAY_LENGTH = 10
 NUMBER_OF_CHANGES = 10000000
 LOGGING_LEVEL = logging.INFO
 
+class Main:
+
+    def __init__(self):
+        pass
+    
+    def initialize_values(self,array_length,number_of_changes):
+        self.array = Array(array_length)
+        logging.info("Array created with the following data %s", self.array.to_string())
+        self.changes = NumberOfChanges(number_of_changes)
+    
+    def do(self):
+        task = Task()
+        task.prepare(self.array,self.changes)
+        logging.info("Starting the changes.")
+        task.do()
+
+    def finish(self):
+        logging.info("Array at the end of the changes: %s", self.array.to_string())
+
+
+class Task:
+    def prepare(self, array, changes):
+        self._array = array
+        self._changes = changes
+    
+    def do(self):
+        while(self._changes.check_and_reserve_run()):
+            position1 = self._array.get_random_position()
+            position2 = self._array.get_random_position()
+            while position1 == position2:
+                position2 = self._array.get_random_position()
+            self._array.swap_values(position1,position2)
+
+
 class NumberOfChanges:
     def __init__(self, number_of_changes):
         logging.debug("Setting total number of changes to %d.",number_of_changes)
@@ -65,38 +99,6 @@ class Array:
         self._array[position2] = value1
         logging.debug("After swapped: Value of position %d is %d and value of position %d is %d", position1, value1, position2, value2)
 
-class Task:
-    def prepare(self, array, changes):
-        self._array = array
-        self._changes = changes
-    
-    def do(self):
-        while(self._changes.check_and_reserve_run()):
-            position1 = self._array.get_random_position()
-            position2 = self._array.get_random_position()
-            while position1 == position2:
-                position2 = self._array.get_random_position()
-            self._array.swap_values(position1,position2)
-
-
-class Main:
-
-    def __init__(self):
-        pass
-    
-    def initialize_values(self,array_length,number_of_changes):
-        self.array = Array(array_length)
-        logging.info("Array created with the following data %s", self.array.to_string())
-        self.changes = NumberOfChanges(number_of_changes)
-    
-    def do(self):
-        task = Task()
-        task.prepare(self.array,self.changes)
-        logging.info("Starting the changes.")
-        task.do()
-
-    def finish(self):
-        logging.info("Array at the end of the changes: %s", self.array.to_string())
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
