@@ -28,7 +28,9 @@ class Main:
 
 
 class ThreadManagement:
-    pass
+    def __init__(self,number_of_threads):
+        self.threads = []
+        self._number_of_threads = number_of_threads
 
 class Task:
     def prepare_and_do(self, array, changes):
