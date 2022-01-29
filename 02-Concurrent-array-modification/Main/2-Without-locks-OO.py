@@ -13,10 +13,11 @@ class Main:
     def __init__(self):
         pass
     
-    def initialize_values(self,array_length,number_of_changes):
+    def initialize_values(self,array_length,number_of_changes, number_of_threads):
         self.array = Array(array_length)
         logging.info("Array created with the following data %s", self.array.to_string())
         self.changes = NumberOfChanges(number_of_changes)
+        self.threads = ThreadManagement(number_of_threads)
     
     def do(self):
         task = Task(1)
@@ -126,7 +127,7 @@ if __name__ == "__main__":
     logging.basicConfig(format=format, level=LOGGING_LEVEL, datefmt="%H:%M:%S")
 
     main = Main()
-    main.initialize_values(ARRAY_LENGTH,NUMBER_OF_CHANGES)
+    main.initialize_values(ARRAY_LENGTH,NUMBER_OF_CHANGES,NUMBER_OF_THREADS)
     timestamp1 = datetime.datetime.now()
     main.do()
     timestamp2 = datetime.datetime.now()
