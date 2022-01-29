@@ -27,11 +27,14 @@ class Main:
         logging.info("Array at the end of the changes: %s", self.array.to_string())
 
 
+class ThreadManagement:
+    pass
+
 class Task:
     def prepare_and_do(self, array, changes):
         self.prepare(array, changes)
         self.do()
-        
+
     def prepare(self, array, changes):
         self._array = array
         self._changes = changes
