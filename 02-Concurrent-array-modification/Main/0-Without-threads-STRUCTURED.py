@@ -5,26 +5,6 @@ import datetime
 ARRAY_LENGTH = 10
 NUMBER_OF_CHANGES = 1000000
 
-def array_creation():
-    array = []
-    for index in range(ARRAY_LENGTH):
-        array.append(index)
-    return array
-
-def array_print(array):
-    array_str = ""
-    array_str += "("
-    first = True
-    for item in array:
-        if first:
-            array_str += "%d" % item
-            first = False
-        else:
-            array_str += ", %d" % item
-    array_str += ")"
-
-    logging.info(array_str)
-
 def make_permutations(array,number_of_changes):
     while number_of_changes >= 0:
         number_of_changes -= 1
@@ -45,12 +25,32 @@ def choose_positions(max_value):
 
     return result
 
-
 def change_position_values(position1, position2, array):
     value1 = array[position1]
     value2 = array[position2]
     array[position1] = value2
     array[position2] = value1
+
+def array_creation():
+    array = []
+    for index in range(ARRAY_LENGTH):
+        array.append(index)
+    return array
+
+def array_print(array):
+    array_str = ""
+    array_str += "("
+    first = True
+    for item in array:
+        if first:
+            array_str += "%d" % item
+            first = False
+        else:
+            array_str += ", %d" % item
+    array_str += ")"
+
+    logging.info(array_str)
+
 
 if __name__ == "__main__":
     timestamp1 = datetime.datetime.now() 
