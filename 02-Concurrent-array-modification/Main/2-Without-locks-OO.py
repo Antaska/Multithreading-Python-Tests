@@ -5,6 +5,7 @@ import threading
 
 ARRAY_LENGTH = 10
 NUMBER_OF_CHANGES = 10
+NUMBER_OF_THREADS = 3
 LOGGING_LEVEL = logging.DEBUG
 
 class Main:
