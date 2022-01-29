@@ -20,10 +20,12 @@ class Main:
         self.threads = ThreadManagement(number_of_threads)
     
     def do(self):
-        task = Task(1)
-        task.prepare(self.array,self.changes)
-        logging.info("Starting the changes.")
-        task.do()
+        self.threads.prepare_threads(self.array, self.changes)
+        logging.info("Starting the threads")
+        self.threads.start_threads()
+        logging.info("Threads started, waiting to all threads finish")
+        self.threads.wait_for_all_threads_finish()
+        logging.info("All threads finished")
 
     def finish(self):
         logging.info("Array at the end of the changes: %s", self.array.to_string())
