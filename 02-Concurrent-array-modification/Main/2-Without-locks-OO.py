@@ -33,6 +33,9 @@ class ThreadManagement:
         self._number_of_threads = number_of_threads
 
 class Task:
+    def __init__(self,thread_number):
+        self.__thread_number = thread_number
+        
     def prepare_and_do(self, array, changes):
         self.prepare(array, changes)
         self.do()
