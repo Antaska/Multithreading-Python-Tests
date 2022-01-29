@@ -41,8 +41,14 @@ class ThreadManagement:
             self.threads.append(x)
     
     def start_threads(self):
-        for thread in self.threads:
+        for index, thread in enumerate(self.threads):
+            logging.info("Thread %d stated", index)
             thread.start()
+    
+    def wait_for_all_threads_finish(self):
+        for index, thread in enumerate(self.threads):
+            thread.join()
+            logging.info("Thread %d finished",index)
 
 
 class Task:
