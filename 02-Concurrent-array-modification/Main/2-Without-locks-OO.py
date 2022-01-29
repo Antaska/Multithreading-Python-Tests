@@ -1,6 +1,7 @@
 import logging
 import random
-import datetime 
+import datetime
+import threading 
 
 ARRAY_LENGTH = 10
 NUMBER_OF_CHANGES = 10000000
@@ -27,6 +28,10 @@ class Main:
 
 
 class Task:
+    def prepare_and_do(self, array, changes):
+        self.prepare(array, changes)
+        self.do()
+        
     def prepare(self, array, changes):
         self._array = array
         self._changes = changes
