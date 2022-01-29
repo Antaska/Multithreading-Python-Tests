@@ -53,8 +53,8 @@ class Task:
     
     def do(self):
         while(self._changes.check_and_reserve_run(self._thread_number)):
-            position1 = self._array.get_random_position()
-            position2 = self._array.get_random_position()
+            position1 = self._array.get_random_position(self._thread_number)
+            position2 = self._array.get_random_position(self._thread_number)
             while position1 == position2:
                 position2 = self._array.get_random_position()
             self._array.swap_values(position1,position2)
@@ -106,9 +106,9 @@ class Array:
     def get_array_length(self):
         return self._length
     
-    def get_random_position(self):
+    def get_random_position(self, thread_number):
         value = random.randint(0,self._length -1) 
-        logging.debug("Random position chosen is %d", value)
+        logging.debug("Thread %d: Random position chosen is %d", thread_number, value)
         return value
     
     def swap_values(self, position1, position2):
