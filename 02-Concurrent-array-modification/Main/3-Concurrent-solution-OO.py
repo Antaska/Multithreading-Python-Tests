@@ -5,9 +5,9 @@ import threading
 import time
 
 ARRAY_LENGTH = 10
-NUMBER_OF_CHANGES = 10
-NUMBER_OF_THREADS = 3
-LOGGING_LEVEL = logging.DEBUG
+NUMBER_OF_CHANGES = 1000000
+NUMBER_OF_THREADS = 100
+LOGGING_LEVEL = logging.INFO
 
 class Main:
 
@@ -96,7 +96,7 @@ class NumberOfChanges:
 
     def reserve_run(self):
         temp = self._number_of_changes
-        time.sleep(0.001)
+        #time.sleep(0.001)
         self._number_of_changes = temp -1
 
 class Array:
@@ -105,7 +105,7 @@ class Array:
         locks = []
         for index in range(array_length):
             array.append(index)
-            locks.append(threading.Rlock())
+            locks.append(threading.RLock())
         self._array = array
         self._locks = locks
         self._length = array_length
@@ -133,14 +133,31 @@ class Array:
         return value
     
     def swap_values(self, position1, position2, thread_number):
+        if position1 < position2:
+            logging.debug("Thread %d: Acquiring lock for position %d", thread_number, position1)
+            self._locks[position1].acquire()
+            logging.debug("Thread %d: Acquiring lock for position %d", thread_number, position2)
+            self._locks[position2].acquire()
+        else:
+            logging.debug("Thread %d: Acquiring lock for position %d", thread_number, position2)
+            self._locks[position2].acquire()
+            logging.debug("Thread %d: Acquiring lock for position %d", thread_number, position1)
+            self._locks[position1].acquire()
+
+        #Execute functionality
         value1 = self._array[position1]
         value2 = self._array[position2]
-        time.sleep(0.001)
+        #time.sleep(0.001)
         logging.debug("Thread %d: Value of position %d is %d and value of position %d is %d", thread_number, position1, value1, position2, value2)
         self._array[position1] = value2
         self._array[position2] = value1
         logging.debug("Thread %d: After swapped: Value of position %d is %d and value of position %d is %d",thread_number, position1, value1, position2, value2)
-
+        
+        #Free the locks
+        logging.debug("Thread %d: Releasing lock for position %d", thread_number, position1)
+        self._locks[position1].release()
+        logging.debug("Thread %d: Releasing lock for position %d", thread_number, position2)
+        self._locks[position2].release()
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
