@@ -79,15 +79,17 @@ class NumberOfChanges:
     def __init__(self, number_of_changes):
         logging.debug("Setting total number of changes to %d.",number_of_changes)
         self._number_of_changes = number_of_changes
+        self.lock = threading.RLock()
     
     def check_and_reserve_run(self, thread_number):
-        if self.are_executions_remaining():
-            self.reserve_run()
-            logging.debug("Thread %d: Execution remaining found. There are still %d executions remaining after this one",thread_number,self._number_of_changes)
-            return True
-        else:
-            logging.debug("Thread %d: No more executions remaining.",thread_number)
-            return False
+        with self.lock:
+            if self.are_executions_remaining():
+                self.reserve_run()
+                logging.debug("Thread %d: Execution remaining found. There are still %d executions remaining after this one",thread_number,self._number_of_changes)
+                return True
+            else:
+                logging.debug("Thread %d: No more executions remaining.",thread_number)
+                return False
 
     def are_executions_remaining(self):
         return self._number_of_changes > 0
