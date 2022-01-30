@@ -102,9 +102,12 @@ class NumberOfChanges:
 class Array:
     def __init__(self, array_length):
         array = []
+        locks = []
         for index in range(array_length):
             array.append(index)
+            locks.append(threading.Rlock())
         self._array = array
+        self._locks = locks
         self._length = array_length
         logging.debug("Array created with %d positions",array_length)
     
